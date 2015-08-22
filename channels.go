@@ -49,13 +49,13 @@ type Channel struct {
 type Topic struct {
 	Value   string `json:"value"`
 	Creator string `json:"creator"`
-	LastSet string `json:"last_set"`
+	LastSet int    `json:"last_set"`
 }
 
 type Purpose struct {
 	Value   string `json:"value"`
 	Creator string `json:"creator"`
-	LastSet string `json:"last_set"`
+	LastSet int    `json:"last_set"`
 }
 
 func (res *ChannelsListAPIResponse) Channels() ([]Channel, error) {
