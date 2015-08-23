@@ -86,15 +86,15 @@ func (ch *Channel) Purpose() (*Purpose, error) {
 	return pp, nil
 }
 
-func (sl *Slack) LookupChannelID(name string) (string, error) {
+func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
 	channels, err := sl.ChannelsList()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	for _, channel := range channels {
 		if channel.Name == name {
-			return channel.Id, nil
+			return &channel, nil
 		}
 	}
-	return "", fmt.Errorf("No such channel name: %v", name)
+	return nil, fmt.Errorf("No such channel name: %v", name)
 }

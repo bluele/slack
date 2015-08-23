@@ -29,11 +29,11 @@ const (
 
 func main() {
   api := slack.New(token)
-  channelID, err := api.LookupChannelID(channelName)
+  channel, err := api.FindChannelByName(channelName)
   if err != nil {
     panic(err)
   }
-  err = api.ChatPostMessage(channelID, "Hello, world!", nil)
+  err = api.ChatPostMessage(channel.Id, "Hello, world!", nil)
   if err != nil {
     panic(err)
   }
