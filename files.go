@@ -12,8 +12,6 @@ import (
 	"strings"
 )
 
-const filesUploadApiEndpoint = "files.upload"
-
 func (sl *Slack) FilesUpload(opt *FilesUploadOpt) error {
 	req, err := sl.createFilesUploadRequest(opt)
 	if err != nil {

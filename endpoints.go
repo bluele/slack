@@ -9,4 +9,6 @@ const (
 
 	groupsListApiEndpoint   = "groups.list"
 	groupsCreateApiEndpoint = "groups.create"
+
+	filesUploadApiEndpoint = "files.upload"
 )
