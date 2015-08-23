@@ -3,7 +3,6 @@ package slack
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 )
 
 func (sl *Slack) GroupsList() ([]*Group, error) {
@@ -73,15 +72,21 @@ func (res *GroupsCreateAPIResponse) Group() (*Group, error) {
 	return &group, nil
 }
 
-func (sl *Slack) FindGroupByName(name string) (*Group, error) {
+func (sl *Slack) FindGroup(cb func(*Group) bool) (*Group, error) {
 	groups, err := sl.GroupsList()
 	if err != nil {
 		return nil, err
 	}
 	for _, group := range groups {
-		if group.Name == name {
+		if cb(group) {
 			return group, nil
 		}
 	}
-	return nil, fmt.Errorf("No such group name: %v", name)
+	return nil, errors.New("No such group.")
+}
+
+func (sl *Slack) FindGroupByName(name string) (*Group, error) {
+	return sl.FindGroup(func(group *Group) bool {
+		return group.Name == name
+	})
 }

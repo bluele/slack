@@ -3,7 +3,6 @@ package slack
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 )
 
 // API channels.list: Lists all channels in a Slack team.
@@ -71,15 +70,21 @@ func (ch *Channel) Purpose() (*Purpose, error) {
 	return pp, nil
 }
 
-func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
+func (sl *Slack) FindChannel(cb func(*Channel) bool) (*Channel, error) {
 	channels, err := sl.ChannelsList()
 	if err != nil {
 		return nil, err
 	}
 	for _, channel := range channels {
-		if channel.Name == name {
+		if cb(channel) {
 			return channel, nil
 		}
 	}
-	return nil, fmt.Errorf("No such channel name: %v", name)
+	return nil, errors.New("No such channel.")
+}
+
+func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
+	return sl.FindChannel(func(channel *Channel) bool {
+		return channel.Name == name
+	})
 }
