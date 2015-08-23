@@ -6,10 +6,8 @@ import (
 	"fmt"
 )
 
-const channelsListApiEndpoint = "channels.list"
-
 // API channels.list: Lists all channels in a Slack team.
-func (sl *Slack) ChannelsList() ([]Channel, error) {
+func (sl *Slack) ChannelsList() ([]*Channel, error) {
 	uv := sl.UrlValues()
 	body, err := sl.GetRequest(channelsListApiEndpoint, uv)
 	if err != nil {
@@ -27,9 +25,8 @@ func (sl *Slack) ChannelsList() ([]Channel, error) {
 }
 
 type ChannelsListAPIResponse struct {
-	Ok          bool            `json:"ok"`
+	BaseAPIResponse
 	RawChannels json.RawMessage `json:"channels"`
-	Error       string          `json:"error"`
 }
 
 type Channel struct {
@@ -47,20 +44,8 @@ type Channel struct {
 	NumMembers int             `json:"num_members"`
 }
 
-type Topic struct {
-	Value   string `json:"value"`
-	Creator string `json:"creator"`
-	LastSet int    `json:"last_set"`
-}
-
-type Purpose struct {
-	Value   string `json:"value"`
-	Creator string `json:"creator"`
-	LastSet int    `json:"last_set"`
-}
-
-func (res *ChannelsListAPIResponse) Channels() ([]Channel, error) {
-	var chs []Channel
+func (res *ChannelsListAPIResponse) Channels() ([]*Channel, error) {
+	var chs []*Channel
 	err := json.Unmarshal(res.RawChannels, &chs)
 	if err != nil {
 		return nil, err
@@ -93,8 +78,16 @@ func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
 	}
 	for _, channel := range channels {
 		if channel.Name == name {
-			return &channel, nil
+			return channel, nil
 		}
 	}
 	return nil, fmt.Errorf("No such channel name: %v", name)
+}
+
+func (sl *Slack) FindChannelIDByName(name string) (string, error) {
+	channel, err := sl.FindChannelByName(name)
+	if err != nil {
+		return "", err
+	}
+	return channel.Id, nil
 }

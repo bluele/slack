@@ -6,8 +6,6 @@ import (
 	"net/url"
 )
 
-const chatPostMessageApiEndpoint = "chat.postMessage"
-
 // API chat.postMessage: Sends a message to a channel.
 func (sl *Slack) ChatPostMessage(channel string, text string, opt *ChatPostMessageOpt) error {
 	uv := sl.buildChatPostMessageUrlValues(opt)
@@ -40,10 +38,9 @@ type ChatPostMessageOpt struct {
 }
 
 type ChatPostMessageAPIResponse struct {
-	Ok      bool   `json:"ok"`
+	BaseAPIResponse
 	Channel string `json:"channel"`
 	Ts      string `json:"ts"`
-	Error   string `json:"error"`
 }
 
 func (sl *Slack) buildChatPostMessageUrlValues(opt *ChatPostMessageOpt) *url.Values {

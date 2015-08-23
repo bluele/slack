@@ -4,8 +4,6 @@ import (
 	"net/url"
 )
 
-const apiBaseUrl = "https://slack.com/api/"
-
 type Slack struct {
 	token string
 }
