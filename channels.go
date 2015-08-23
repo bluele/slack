@@ -83,11 +83,3 @@ func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
 	}
 	return nil, fmt.Errorf("No such channel name: %v", name)
 }
-
-func (sl *Slack) FindChannelIDByName(name string) (string, error) {
-	channel, err := sl.FindChannelByName(name)
-	if err != nil {
-		return "", err
-	}
-	return channel.Id, nil
-}

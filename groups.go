@@ -85,11 +85,3 @@ func (sl *Slack) FindGroupByName(name string) (*Group, error) {
 	}
 	return nil, fmt.Errorf("No such group name: %v", name)
 }
-
-func (sl *Slack) FindGroupIDByName(name string) (string, error) {
-	group, err := sl.FindGroupByName(name)
-	if err != nil {
-		return "", err
-	}
-	return group.Id, nil
-}
