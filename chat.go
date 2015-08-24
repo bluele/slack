@@ -28,6 +28,7 @@ func (sl *Slack) ChatPostMessage(channel string, text string, opt *ChatPostMessa
 }
 
 type ChatPostMessageOpt struct {
+	AsUser      bool
 	Parse       string
 	LinkNames   string
 	AttachMents string
@@ -48,7 +49,9 @@ func (sl *Slack) buildChatPostMessageUrlValues(opt *ChatPostMessageOpt) *url.Val
 	if opt == nil {
 		return uv
 	}
-
+	if opt.AsUser {
+		uv.Add("as_user", "true")
+	}
 	if opt.Parse != "" {
 		uv.Add("parse", opt.Parse)
 	}
