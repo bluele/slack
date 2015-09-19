@@ -90,3 +90,15 @@ func (sl *Slack) FindGroupByName(name string) (*Group, error) {
 		return group.Name == name
 	})
 }
+
+func (sl *Slack) InviteGroup(channelId, userId string) error {
+	uv := sl.UrlValues()
+	uv.Add("channel", channelId)
+	uv.Add("user", userId)
+
+	_, err := sl.GetRequest(channelsJoinApiEndpoint, uv)
+	if err != nil {
+		return err
+	}
+	return nil
+}

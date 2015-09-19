@@ -88,3 +88,14 @@ func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
 		return channel.Name == name
 	})
 }
+
+func (sl *Slack) JoinChannel(name string) error {
+	uv := sl.UrlValues()
+	uv.Add("name", name)
+
+	_, err := sl.GetRequest(channelsJoinApiEndpoint, uv)
+	if err != nil {
+		return err
+	}
+	return nil
+}
