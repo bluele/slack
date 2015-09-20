@@ -14,6 +14,7 @@ files.upload | Upload an image/file | [#link](https://github.com/bluele/slack/bl
 groups.invite | Invites a user to a private group. | [#link](https://github.com/bluele/slack/blob/master/examples/groups_invite.go)
 groups.create | Creates a private group. | [#link](https://github.com/bluele/slack/blob/master/examples/groups_create.go)
 groups.list | Lists private groups that the calling user has access to. | [#link](https://github.com/bluele/slack/blob/master/examples/groups_list.go)
+users.info | Gets information about a channel. | [#link](https://github.com/bluele/slack/blob/master/examples/users_info.go)
 users.list | Lists all users in a Slack team. | [#link](https://github.com/bluele/slack/blob/master/examples/users_list.go)
 
 

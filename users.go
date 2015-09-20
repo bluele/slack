@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-type Member struct {
+type User struct {
 	Id       string `json:"id"`
 	Name     string `json:"name"`
 	Deleted  bool   `json:"deleted"`
@@ -31,7 +31,7 @@ type ProfileInfo struct {
 	Image192  string `json:"image_192"`
 }
 
-func (sl *Slack) UsersList() ([]*Member, error) {
+func (sl *Slack) UsersList() ([]*User, error) {
 	uv := sl.UrlValues()
 	body, err := sl.GetRequest(usersListApiEndpoint, uv)
 	if err != nil {
@@ -53,8 +53,8 @@ type UsersListAPIResponse struct {
 	RawMembers json.RawMessage `json:"members"`
 }
 
-func (res *UsersListAPIResponse) Members() ([]*Member, error) {
-	var members []*Member
+func (res *UsersListAPIResponse) Members() ([]*User, error) {
+	var members []*User
 	err := json.Unmarshal(res.RawMembers, &members)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (res *UsersListAPIResponse) Members() ([]*Member, error) {
 	return members, nil
 }
 
-func (sl *Slack) FindUser(cb func(*Member) bool) (*Member, error) {
+func (sl *Slack) FindUser(cb func(*User) bool) (*User, error) {
 	members, err := sl.UsersList()
 	if err != nil {
 		return nil, err
@@ -73,4 +73,28 @@ func (sl *Slack) FindUser(cb func(*Member) bool) (*Member, error) {
 		}
 	}
 	return nil, errors.New("No such user.")
+}
+
+type UsersInfoAPIResponse struct {
+	BaseAPIResponse
+	User *User `json:"user"`
+}
+
+func (sl *Slack) UsersInfo(userId string) (*User, error) {
+	uv := sl.UrlValues()
+	uv.Add("user", userId)
+
+	body, err := sl.GetRequest(usersInfoApiEndpoint, uv)
+	if err != nil {
+		return nil, err
+	}
+	res := new(UsersInfoAPIResponse)
+	err = json.Unmarshal(body, res)
+	if err != nil {
+		return nil, err
+	}
+	if !res.Ok {
+		return nil, errors.New(res.Error)
+	}
+	return res.User, nil
 }

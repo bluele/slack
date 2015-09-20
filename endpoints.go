@@ -15,5 +15,6 @@ const (
 
 	filesUploadApiEndpoint = "files.upload"
 
+	usersInfoApiEndpoint = "users.info"
 	usersListApiEndpoint = "users.list"
 )

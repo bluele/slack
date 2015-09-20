@@ -17,7 +17,7 @@ func main() {
 		panic(err)
 	}
 
-	user, err := api.FindUser(func(user *slack.Member) bool {
+	user, err := api.FindUser(func(user *slack.User) bool {
 		return user.Name == inviteUserName
 	})
 	if err != nil {
