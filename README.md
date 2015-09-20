@@ -6,6 +6,7 @@ Golang client for the Slack API. Include the example code using each slack api.
 
 Method | Description | Example
 --- | --- | ---
+channels.history | Fetches history of messages and events from a channel. | [#link](https://github.com/bluele/slack/blob/master/examples/channels_history.go)
 channels.join | Joins a channel, creating it if needed. | [#link](https://github.com/bluele/slack/blob/master/examples/channels_join.go)
 channels.list | Lists all channels in a Slack team. | [#link](https://github.com/bluele/slack/blob/master/examples/channels_list.go)
 chat.postMessage | Sends a message to a channel. | [#link](https://github.com/bluele/slack/blob/master/examples/chat_post_message.go)

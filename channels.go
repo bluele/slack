@@ -3,6 +3,9 @@ package slack
 import (
 	"encoding/json"
 	"errors"
+	"net/url"
+	"strconv"
+	"time"
 )
 
 // API channels.list: Lists all channels in a Slack team.
@@ -98,4 +101,68 @@ func (sl *Slack) JoinChannel(name string) error {
 		return err
 	}
 	return nil
+}
+
+type Message struct {
+	Type   string `json:"type"`
+	Ts     string `json:"ts"`
+	UserId string `json:"user"`
+	Text   string `json:"text"`
+}
+
+func (msg *Message) Timestamp() *time.Time {
+	tsf, _ := strconv.ParseFloat(msg.Ts, 64)
+	ts := time.Unix(int64(tsf), 0)
+	return &ts
+}
+
+type ChannelsHistoryOpt struct {
+	Channel   string  `json:"channel"`
+	Latest    float64 `json:"latest"`
+	Oldest    float64 `json:"oldest"`
+	Inclusive int     `json:"inclusive"`
+	Count     int     `json:"count"`
+}
+
+func (opt *ChannelsHistoryOpt) Bind(uv *url.Values) error {
+	uv.Add("channel", opt.Channel)
+	if opt.Latest != 0.0 {
+		uv.Add("lastest", strconv.FormatFloat(opt.Latest, 'f', 6, 64))
+	}
+	if opt.Oldest != 0.0 {
+		uv.Add("oldest", strconv.FormatFloat(opt.Oldest, 'f', 6, 64))
+	}
+	uv.Add("inclusive", strconv.Itoa(opt.Inclusive))
+	if opt.Count != 0 {
+		uv.Add("count", strconv.Itoa(opt.Count))
+	}
+	return nil
+}
+
+type ChannelsHistoryResponse struct {
+	BaseAPIResponse
+	Latest   float64    `json:"latest"`
+	Messages []*Message `json:"messages"`
+	HasMore  bool       `json:"has_more"`
+}
+
+func (sl *Slack) ChannelsHistory(opt *ChannelsHistoryOpt) ([]*Message, error) {
+	uv := sl.UrlValues()
+	err := opt.Bind(uv)
+	if err != nil {
+		return nil, err
+	}
+	body, err := sl.GetRequest(channelsHistoryApiEndpoint, uv)
+	if err != nil {
+		return nil, err
+	}
+	res := new(ChannelsHistoryResponse)
+	err = json.Unmarshal(body, res)
+	if err != nil {
+		return nil, err
+	}
+	if !res.Ok {
+		return nil, errors.New(res.Error)
+	}
+	return res.Messages, nil
 }
