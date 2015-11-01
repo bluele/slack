@@ -26,11 +26,13 @@ func (sl *Slack) ChannelsList() ([]*Channel, error) {
 	return res.Channels()
 }
 
+// response type for `channels.list` api
 type ChannelsListAPIResponse struct {
 	BaseAPIResponse
 	RawChannels json.RawMessage `json:"channels"`
 }
 
+// slack channel type
 type Channel struct {
 	Id         string          `json:"id"`
 	Name       string          `json:"name"`
@@ -46,6 +48,7 @@ type Channel struct {
 	NumMembers int             `json:"num_members"`
 }
 
+// Channels returns a slice of channel object from a response of `channels.list` api.
 func (res *ChannelsListAPIResponse) Channels() ([]*Channel, error) {
 	var chs []*Channel
 	err := json.Unmarshal(res.RawChannels, &chs)
@@ -73,6 +76,7 @@ func (ch *Channel) Purpose() (*Purpose, error) {
 	return pp, nil
 }
 
+// FindChannel returns a channel object that satisfy conditions specified.
 func (sl *Slack) FindChannel(cb func(*Channel) bool) (*Channel, error) {
 	channels, err := sl.ChannelsList()
 	if err != nil {
@@ -86,12 +90,14 @@ func (sl *Slack) FindChannel(cb func(*Channel) bool) (*Channel, error) {
 	return nil, errors.New("No such channel.")
 }
 
+// FindChannelByName returns a channel object that matches name specified.
 func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
 	return sl.FindChannel(func(channel *Channel) bool {
 		return channel.Name == name
 	})
 }
 
+// API channels.join: Joins a channel, creating it if needed.
 func (sl *Slack) JoinChannel(name string) error {
 	uv := sl.UrlValues()
 	uv.Add("name", name)
@@ -116,6 +122,7 @@ func (msg *Message) Timestamp() *time.Time {
 	return &ts
 }
 
+// option type for `channels.history` api
 type ChannelsHistoryOpt struct {
 	Channel   string  `json:"channel"`
 	Latest    float64 `json:"latest"`
@@ -139,6 +146,7 @@ func (opt *ChannelsHistoryOpt) Bind(uv *url.Values) error {
 	return nil
 }
 
+// response type for `channels.history` api
 type ChannelsHistoryResponse struct {
 	BaseAPIResponse
 	Latest   float64    `json:"latest"`
@@ -146,6 +154,7 @@ type ChannelsHistoryResponse struct {
 	HasMore  bool       `json:"has_more"`
 }
 
+// API channels.history: Fetches history of messages and events from a channel.
 func (sl *Slack) ChannelsHistory(opt *ChannelsHistoryOpt) ([]*Message, error) {
 	uv := sl.UrlValues()
 	err := opt.Bind(uv)

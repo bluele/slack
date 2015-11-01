@@ -5,6 +5,7 @@ import (
 	"errors"
 )
 
+// slack user type
 type User struct {
 	Id       string `json:"id"`
 	Name     string `json:"name"`
@@ -17,6 +18,7 @@ type User struct {
 	HasFiles bool `json:"has_files"`
 }
 
+// slack user profile type
 type ProfileInfo struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
@@ -31,6 +33,7 @@ type ProfileInfo struct {
 	Image192  string `json:"image_192"`
 }
 
+// API users.list: Lists all users in a Slack team.
 func (sl *Slack) UsersList() ([]*User, error) {
 	uv := sl.UrlValues()
 	body, err := sl.GetRequest(usersListApiEndpoint, uv)
@@ -48,6 +51,7 @@ func (sl *Slack) UsersList() ([]*User, error) {
 	return res.Members()
 }
 
+// response type of `users.list` api
 type UsersListAPIResponse struct {
 	BaseAPIResponse
 	RawMembers json.RawMessage `json:"members"`
@@ -62,6 +66,7 @@ func (res *UsersListAPIResponse) Members() ([]*User, error) {
 	return members, nil
 }
 
+// FindUser returns a user object that satisfy conditions specified.
 func (sl *Slack) FindUser(cb func(*User) bool) (*User, error) {
 	members, err := sl.UsersList()
 	if err != nil {
@@ -75,11 +80,13 @@ func (sl *Slack) FindUser(cb func(*User) bool) (*User, error) {
 	return nil, errors.New("No such user.")
 }
 
+// response type of `users.info` api
 type UsersInfoAPIResponse struct {
 	BaseAPIResponse
 	User *User `json:"user"`
 }
 
+// API users.info: Gets information about a user.
 func (sl *Slack) UsersInfo(userId string) (*User, error) {
 	uv := sl.UrlValues()
 	uv.Add("user", userId)

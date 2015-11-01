@@ -27,6 +27,7 @@ func (sl *Slack) ChatPostMessage(channelId string, text string, opt *ChatPostMes
 	return nil
 }
 
+// option type for `chat.postMessage` api
 type ChatPostMessageOpt struct {
 	AsUser      bool
 	Parse       string
@@ -38,6 +39,7 @@ type ChatPostMessageOpt struct {
 	IconEmoji   string
 }
 
+// response type for `chat.postMessage` api
 type ChatPostMessageAPIResponse struct {
 	BaseAPIResponse
 	Channel string `json:"channel"`

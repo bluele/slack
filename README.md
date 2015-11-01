@@ -1,4 +1,4 @@
-# Slack
+# Slack [![GoDoc](https://godoc.org/github.com/bluele/slack?status.png)](https://godoc.org/github.com/bluele/slack)
 
 Golang client for the Slack API. Include the example code using each slack api.
 

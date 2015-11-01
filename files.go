@@ -12,6 +12,7 @@ import (
 	"strings"
 )
 
+// API files.upload: Uploads or creates a file.
 func (sl *Slack) FilesUpload(opt *FilesUploadOpt) error {
 	req, err := sl.createFilesUploadRequest(opt)
 	if err != nil {
@@ -32,6 +33,7 @@ func (sl *Slack) FilesUpload(opt *FilesUploadOpt) error {
 	return nil
 }
 
+// option type for `files.upload` api
 type FilesUploadOpt struct {
 	Content        string
 	Filepath       string
@@ -42,6 +44,7 @@ type FilesUploadOpt struct {
 	Channels       []string
 }
 
+// response of `files.upload` api
 type FilesUploadAPIResponse struct {
 	Ok    bool   `json:"ok"`
 	Error string `json:"error"`

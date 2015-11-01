@@ -8,6 +8,7 @@ type Slack struct {
 	token string
 }
 
+// Create a slack client with an API token.
 func New(token string) *Slack {
 	return &Slack{
 		token: token,
