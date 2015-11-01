@@ -15,7 +15,7 @@ func New(token string) *Slack {
 	}
 }
 
-func (sl *Slack) UrlValues() *url.Values {
+func (sl *Slack) urlValues() *url.Values {
 	uv := url.Values{}
 	uv.Add("token", sl.token)
 	return &uv

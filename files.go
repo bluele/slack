@@ -52,7 +52,7 @@ type FilesUploadAPIResponse struct {
 
 func (sl *Slack) createFilesUploadRequest(opt *FilesUploadOpt) (*http.Request, error) {
 	body := new(bytes.Buffer)
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	if opt == nil {
 		req, err := http.NewRequest("POST", apiBaseUrl+filesUploadApiEndpoint, body)
 		if err != nil {

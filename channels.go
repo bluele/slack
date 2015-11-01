@@ -10,7 +10,7 @@ import (
 
 // API channels.list: Lists all channels in a Slack team.
 func (sl *Slack) ChannelsList() ([]*Channel, error) {
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	body, err := sl.GetRequest(channelsListApiEndpoint, uv)
 	if err != nil {
 		return nil, err
@@ -99,7 +99,7 @@ func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
 
 // API channels.join: Joins a channel, creating it if needed.
 func (sl *Slack) JoinChannel(name string) error {
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	uv.Add("name", name)
 
 	_, err := sl.GetRequest(channelsJoinApiEndpoint, uv)
@@ -156,7 +156,7 @@ type ChannelsHistoryResponse struct {
 
 // API channels.history: Fetches history of messages and events from a channel.
 func (sl *Slack) ChannelsHistory(opt *ChannelsHistoryOpt) ([]*Message, error) {
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	err := opt.Bind(uv)
 	if err != nil {
 		return nil, err

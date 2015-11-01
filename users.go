@@ -35,7 +35,7 @@ type ProfileInfo struct {
 
 // API users.list: Lists all users in a Slack team.
 func (sl *Slack) UsersList() ([]*User, error) {
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	body, err := sl.GetRequest(usersListApiEndpoint, uv)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ type UsersInfoAPIResponse struct {
 
 // API users.info: Gets information about a user.
 func (sl *Slack) UsersInfo(userId string) (*User, error) {
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	uv.Add("user", userId)
 
 	body, err := sl.GetRequest(usersInfoApiEndpoint, uv)

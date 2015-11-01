@@ -47,7 +47,7 @@ type ChatPostMessageAPIResponse struct {
 }
 
 func (sl *Slack) buildChatPostMessageUrlValues(opt *ChatPostMessageOpt) *url.Values {
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	if opt == nil {
 		return uv
 	}

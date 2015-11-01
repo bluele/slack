@@ -7,7 +7,7 @@ import (
 
 // API groups.list: Lists private groups that the calling user has access to.
 func (sl *Slack) GroupsList() ([]*Group, error) {
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	body, err := sl.GetRequest(groupsListApiEndpoint, uv)
 	if err != nil {
 		return nil, err
@@ -25,7 +25,7 @@ func (sl *Slack) GroupsList() ([]*Group, error) {
 
 // API groups.create: Creates a private group.
 func (sl *Slack) CreateGroup(name string) error {
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	uv.Add("name", name)
 
 	_, err := sl.GetRequest(groupsCreateApiEndpoint, uv)
@@ -101,7 +101,7 @@ func (sl *Slack) FindGroupByName(name string) (*Group, error) {
 
 // API groups.invite: Invites a user to a private group.
 func (sl *Slack) InviteGroup(channelId, userId string) error {
-	uv := sl.UrlValues()
+	uv := sl.urlValues()
 	uv.Add("channel", channelId)
 	uv.Add("user", userId)
 
