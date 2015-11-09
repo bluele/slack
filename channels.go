@@ -47,7 +47,7 @@ type Channel struct {
 	RawPurpose  json.RawMessage `json:"purpose"`
 	NumMembers  int             `json:"num_members"`
 	LastRead    float64         `json:"last_read,omitempty"`
-	UnreadCount float64         `json:"last_read,omitempty"`
+	UnreadCount float64         `json:"unread_count,omitempty"`
 }
 
 // Channels returns a slice of channel object from a response of `channels.list` api.
