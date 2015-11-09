@@ -46,7 +46,7 @@ type Channel struct {
 	RawTopic    json.RawMessage `json:"topic"`
 	RawPurpose  json.RawMessage `json:"purpose"`
 	NumMembers  int             `json:"num_members"`
-	LastRead    float64         `json:"last_read,omitempty"`
+	LastRead    string          `json:"last_read,omitempty"`
 	UnreadCount float64         `json:"unread_count,omitempty"`
 }
 
