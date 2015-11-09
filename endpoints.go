@@ -6,6 +6,7 @@ const (
 	channelsListApiEndpoint    = "channels.list"
 	channelsJoinApiEndpoint    = "channels.join"
 	channelsHistoryApiEndpoint = "channels.history"
+	channelsMarkApiEndpoint    = "channels.mark"
 
 	chatPostMessageApiEndpoint = "chat.postMessage"
 

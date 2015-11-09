@@ -34,18 +34,20 @@ type ChannelsListAPIResponse struct {
 
 // slack channel type
 type Channel struct {
-	Id         string          `json:"id"`
-	Name       string          `json:"name"`
-	IsChannel  bool            `json:"is_channel"`
-	Created    int             `json:"created"`
-	Creator    string          `json:"creator"`
-	IsArchived bool            `json:"is_archived"`
-	IsGeneral  bool            `json:"is_general"`
-	IsMember   bool            `json:"is_member"`
-	Members    []string        `json:"members"`
-	RawTopic   json.RawMessage `json:"topic"`
-	RawPurpose json.RawMessage `json:"purpose"`
-	NumMembers int             `json:"num_members"`
+	Id          string          `json:"id"`
+	Name        string          `json:"name"`
+	IsChannel   bool            `json:"is_channel"`
+	Created     int             `json:"created"`
+	Creator     string          `json:"creator"`
+	IsArchived  bool            `json:"is_archived"`
+	IsGeneral   bool            `json:"is_general"`
+	IsMember    bool            `json:"is_member"`
+	Members     []string        `json:"members"`
+	RawTopic    json.RawMessage `json:"topic"`
+	RawPurpose  json.RawMessage `json:"purpose"`
+	NumMembers  int             `json:"num_members"`
+	LastRead    float64         `json:"last_read,omitempty"`
+	UnreadCount float64         `json:"last_read,omitempty"`
 }
 
 // Channels returns a slice of channel object from a response of `channels.list` api.
@@ -97,6 +99,19 @@ func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
 	})
 }
 
+// ChannelsMark moves the read cursor for the chosen channel.
+func (sl *Slack) ChannelsMark(name, ts string) error {
+	uv := sl.urlValues()
+	uv.Add("name", name)
+	uv.Add("ts", ts)
+
+	_, err := sl.GetRequest(channelsMarkApiEndpoint, uv)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // API channels.join: Joins a channel, creating it if needed.
 func (sl *Slack) JoinChannel(name string) error {
 	uv := sl.urlValues()
@@ -110,10 +125,11 @@ func (sl *Slack) JoinChannel(name string) error {
 }
 
 type Message struct {
-	Type   string `json:"type"`
-	Ts     string `json:"ts"`
-	UserId string `json:"user"`
-	Text   string `json:"text"`
+	Type    string `json:"type"`
+	Subtype string `json:",omitempty"`
+	Ts      string `json:"ts"`
+	UserId  string `json:"user"`
+	Text    string `json:"text"`
 }
 
 func (msg *Message) Timestamp() *time.Time {
