@@ -3,6 +3,7 @@ package slack
 const (
 	apiBaseUrl = "https://slack.com/api/"
 
+	channelsInfoApiEndpoint    = "channels.info"
 	channelsListApiEndpoint    = "channels.list"
 	channelsJoinApiEndpoint    = "channels.join"
 	channelsHistoryApiEndpoint = "channels.history"

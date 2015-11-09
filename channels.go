@@ -78,6 +78,30 @@ func (ch *Channel) Purpose() (*Purpose, error) {
 	return pp, nil
 }
 
+// response type for `channels.list` api
+type ChannelsInfoAPIResponse struct {
+	BaseAPIResponse
+	Channel Channel
+}
+
+func (sl *Slack) ChannelsInfo(id string) (*Channel, error) {
+	uv := sl.urlValues()
+	uv.Add("name", id)
+	body, err := sl.GetRequest(channelsInfoApiEndpoint, uv)
+	if err != nil {
+		return nil, err
+	}
+	res := new(ChannelsInfoAPIResponse)
+	err = json.Unmarshal(body, res)
+	if err != nil {
+		return nil, err
+	}
+	if !res.Ok {
+		return nil, errors.New(res.Error)
+	}
+	return &res.Channel, nil
+}
+
 // FindChannel returns a channel object that satisfy conditions specified.
 func (sl *Slack) FindChannel(cb func(*Channel) bool) (*Channel, error) {
 	channels, err := sl.ChannelsList()
@@ -126,7 +150,7 @@ func (sl *Slack) JoinChannel(name string) error {
 
 type Message struct {
 	Type    string `json:"type"`
-	Subtype string `json:",omitempty"`
+	Subtype string `json:"subtype"`
 	Ts      string `json:"ts"`
 	UserId  string `json:"user"`
 	Text    string `json:"text"`
