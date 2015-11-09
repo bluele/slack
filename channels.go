@@ -86,7 +86,7 @@ type ChannelsInfoAPIResponse struct {
 
 func (sl *Slack) ChannelsInfo(id string) (*Channel, error) {
 	uv := sl.urlValues()
-	uv.Add("name", id)
+	uv.Add("channel", id)
 	body, err := sl.GetRequest(channelsInfoApiEndpoint, uv)
 	if err != nil {
 		return nil, err
