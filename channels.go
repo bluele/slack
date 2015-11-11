@@ -126,7 +126,7 @@ func (sl *Slack) FindChannelByName(name string) (*Channel, error) {
 // ChannelsMark moves the read cursor for the chosen channel.
 func (sl *Slack) ChannelsMark(name, ts string) error {
 	uv := sl.urlValues()
-	uv.Add("name", name)
+	uv.Add("channel", name)
 	uv.Add("ts", ts)
 
 	_, err := sl.GetRequest(channelsMarkApiEndpoint, uv)
