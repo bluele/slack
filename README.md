@@ -33,6 +33,8 @@ const (
 )
 
 func main() {
+  // You can change API endpoint if necessary
+  slack.ApiBaseUrl = "https://foobar.slack.com/api/"
   api := slack.New(token)
   channel, err := api.FindChannelByName(channelName)
   if err != nil {
