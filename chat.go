@@ -30,6 +30,7 @@ func (sl *Slack) ChatPostMessage(channelId string, text string, opt *ChatPostMes
 // option type for `chat.postMessage` api
 type ChatPostMessageOpt struct {
 	AsUser      bool
+	Username    string
 	Parse       string
 	LinkNames   string
 	AttachMents string
@@ -53,6 +54,8 @@ func (sl *Slack) buildChatPostMessageUrlValues(opt *ChatPostMessageOpt) *url.Val
 	}
 	if opt.AsUser {
 		uv.Add("as_user", "true")
+	} else if opt.Username != "" {
+		uv.Add("username", opt.Username)
 	}
 	if opt.Parse != "" {
 		uv.Add("parse", opt.Parse)
