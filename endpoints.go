@@ -1,8 +1,9 @@
 package slack
 
-const (
-	apiBaseUrl = "https://slack.com/api/"
+// ApiBaseUrl can be changed for private Slack solutions
+var ApiBaseUrl = "https://slack.com/api/"
 
+const (
 	channelsListApiEndpoint    = "channels.list"
 	channelsJoinApiEndpoint    = "channels.join"
 	channelsHistoryApiEndpoint = "channels.history"

@@ -18,7 +18,7 @@ func (sl *Slack) request(req *http.Request) ([]byte, error) {
 }
 
 func (sl *Slack) GetRequest(endpoint string, uv *url.Values) ([]byte, error) {
-	ul := apiBaseUrl + endpoint
+	ul := ApiBaseUrl + endpoint
 	req, err := http.NewRequest("GET", ul, nil)
 	if err != nil {
 		return nil, err
@@ -28,7 +28,7 @@ func (sl *Slack) GetRequest(endpoint string, uv *url.Values) ([]byte, error) {
 }
 
 func (sl *Slack) PostRequest(endpoint string, uv *url.Values, body *bytes.Buffer) ([]byte, error) {
-	ul := apiBaseUrl + endpoint
+	ul := ApiBaseUrl + endpoint
 	req, err := http.NewRequest("POST", ul, body)
 	if err != nil {
 		return nil, err

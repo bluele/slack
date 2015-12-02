@@ -54,7 +54,7 @@ func (sl *Slack) createFilesUploadRequest(opt *FilesUploadOpt) (*http.Request, e
 	body := new(bytes.Buffer)
 	uv := sl.urlValues()
 	if opt == nil {
-		req, err := http.NewRequest("POST", apiBaseUrl+filesUploadApiEndpoint, body)
+		req, err := http.NewRequest("POST", ApiBaseUrl+filesUploadApiEndpoint, body)
 		if err != nil {
 			return nil, err
 		}
@@ -90,7 +90,7 @@ func (sl *Slack) createFilesUploadRequest(opt *FilesUploadOpt) (*http.Request, e
 		body = b
 	}
 
-	req, err := http.NewRequest("POST", apiBaseUrl+filesUploadApiEndpoint, body)
+	req, err := http.NewRequest("POST", ApiBaseUrl+filesUploadApiEndpoint, body)
 	if err != nil {
 		return nil, err
 	}
