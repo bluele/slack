@@ -8,7 +8,10 @@ import (
 
 // API chat.postMessage: Sends a message to a channel.
 func (sl *Slack) ChatPostMessage(channelId string, text string, opt *ChatPostMessageOpt) error {
-	uv := sl.buildChatPostMessageUrlValues(opt)
+	uv, err := sl.buildChatPostMessageUrlValues(opt)
+	if err != nil {
+		return err
+	}
 	uv.Add("channel", channelId)
 	uv.Add("text", text)
 
@@ -33,7 +36,7 @@ type ChatPostMessageOpt struct {
 	Username    string
 	Parse       string
 	LinkNames   string
-	AttachMents string
+	Attachments []*Attachment
 	UnfurlLinks string
 	UnfurlMedia string
 	IconUrl     string
@@ -47,10 +50,10 @@ type ChatPostMessageAPIResponse struct {
 	Ts      string `json:"ts"`
 }
 
-func (sl *Slack) buildChatPostMessageUrlValues(opt *ChatPostMessageOpt) *url.Values {
+func (sl *Slack) buildChatPostMessageUrlValues(opt *ChatPostMessageOpt) (*url.Values, error) {
 	uv := sl.urlValues()
 	if opt == nil {
-		return uv
+		return uv, nil
 	}
 	if opt.AsUser {
 		uv.Add("as_user", "true")
@@ -62,9 +65,6 @@ func (sl *Slack) buildChatPostMessageUrlValues(opt *ChatPostMessageOpt) *url.Val
 	}
 	if opt.LinkNames != "" {
 		uv.Add("link_names", opt.LinkNames)
-	}
-	if opt.AttachMents != "" {
-		uv.Add("attachments", opt.AttachMents)
 	}
 	if opt.UnfurlLinks != "" {
 		uv.Add("unfurl_links", opt.UnfurlLinks)
@@ -78,6 +78,12 @@ func (sl *Slack) buildChatPostMessageUrlValues(opt *ChatPostMessageOpt) *url.Val
 	if opt.IconEmoji != "" {
 		uv.Add("icon_emoji", opt.IconEmoji)
 	}
-
-	return uv
+	if opt.Attachments != nil && len(opt.Attachments) > 0 {
+		ats, err := json.Marshal(opt.Attachments)
+		if err != nil {
+			return nil, err
+		}
+		uv.Add("attachments", string(ats))
+	}
+	return uv, nil
 }
