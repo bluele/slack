@@ -13,6 +13,8 @@ const (
 	groupsListApiEndpoint   = "groups.list"
 	groupsCreateApiEndpoint = "groups.create"
 
+	imListApiEndpoint = "im.list"
+
 	filesUploadApiEndpoint = "files.upload"
 
 	usersInfoApiEndpoint = "users.info"

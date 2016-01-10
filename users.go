@@ -80,6 +80,13 @@ func (sl *Slack) FindUser(cb func(*User) bool) (*User, error) {
 	return nil, errors.New("No such user.")
 }
 
+// FindUserByName returns a user object that matches name specified.
+func (sl *Slack) FindUserByName(name string) (*User, error) {
+	return sl.FindUser(func(user *User) bool {
+		return user.Name == name
+	})
+}
+
 // response type of `users.info` api
 type UsersInfoAPIResponse struct {
 	BaseAPIResponse
