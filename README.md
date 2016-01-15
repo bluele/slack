@@ -45,6 +45,10 @@ func main() {
 }
 ```
 
+## Command line tool
+
+If you are looking for slack commandline utility, [vektorlab/slackcat](https://github.com/vektorlab/slackcat) probably suits you.
+
 # Author
 
 **Jun Kimura**
