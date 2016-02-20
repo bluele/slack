@@ -1,6 +1,7 @@
 package slack
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"net/url"
@@ -13,9 +14,8 @@ func (sl *Slack) ChatPostMessage(channelId string, text string, opt *ChatPostMes
 		return err
 	}
 	uv.Add("channel", channelId)
-	uv.Add("text", text)
 
-	body, err := sl.GetRequest(chatPostMessageApiEndpoint, uv)
+	body, err := sl.PostRequest(chatPostMessageApiEndpoint, uv, sl.buildRequestBodyForm(text))
 	if err != nil {
 		return err
 	}
@@ -48,6 +48,10 @@ type ChatPostMessageAPIResponse struct {
 	BaseAPIResponse
 	Channel string `json:"channel"`
 	Ts      string `json:"ts"`
+}
+
+func (sl *Slack) buildRequestBodyForm(text string) (*bytes.Buffer) {
+    return bytes.NewBuffer([]byte("text=" + text))
 }
 
 func (sl *Slack) buildChatPostMessageUrlValues(opt *ChatPostMessageOpt) (*url.Values, error) {
