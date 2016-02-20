@@ -30,6 +30,7 @@ func (sl *Slack) GetRequest(endpoint string, uv *url.Values) ([]byte, error) {
 func (sl *Slack) PostRequest(endpoint string, uv *url.Values, body *bytes.Buffer) ([]byte, error) {
 	ul := apiBaseUrl + endpoint
 	req, err := http.NewRequest("POST", ul, body)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	if err != nil {
 		return nil, err
 	}
