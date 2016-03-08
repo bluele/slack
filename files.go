@@ -60,11 +60,7 @@ func (sl *Slack) createFilesUploadRequest(opt *FilesUploadOpt) (*http.Request, e
 		}
 		req.URL.RawQuery = (*uv).Encode()
 	}
-	contentType := ""
 
-	if opt.Content != "" {
-		uv.Add("content", opt.Content)
-	}
 	if opt.Filetype != "" {
 		uv.Add("filetype", opt.Filetype)
 	}
@@ -80,6 +76,17 @@ func (sl *Slack) createFilesUploadRequest(opt *FilesUploadOpt) (*http.Request, e
 	if len(opt.Channels) != 0 {
 		uv.Add("channels", strings.Join(opt.Channels, ","))
 	}
+
+	var req *http.Request
+	var err error
+	contentType := ""
+
+	if opt.Content != "" {
+		uv.Add("content", opt.Content)
+		contentType = "application/x-www-form-urlencoded"
+		req, err = http.NewRequest("POST", apiBaseUrl+filesUploadApiEndpoint, strings.NewReader((*uv).Encode()))
+	}
+
 	if opt.Filepath != "" {
 		var b *bytes.Buffer
 		var err error
@@ -88,14 +95,14 @@ func (sl *Slack) createFilesUploadRequest(opt *FilesUploadOpt) (*http.Request, e
 			return nil, err
 		}
 		body = b
+		req, err = http.NewRequest("POST", apiBaseUrl+filesUploadApiEndpoint, body)
+		req.URL.RawQuery = (*uv).Encode()
 	}
 
-	req, err := http.NewRequest("POST", apiBaseUrl+filesUploadApiEndpoint, body)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("Content-Type", contentType)
-	req.URL.RawQuery = (*uv).Encode()
 	return req, nil
 }
 
