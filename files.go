@@ -7,6 +7,7 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -51,20 +52,14 @@ type FilesUploadAPIResponse struct {
 }
 
 func (sl *Slack) createFilesUploadRequest(opt *FilesUploadOpt) (*http.Request, error) {
-	body := new(bytes.Buffer)
+	var body io.Reader
+
 	uv := sl.urlValues()
 	if opt == nil {
-		req, err := http.NewRequest("POST", apiBaseUrl+filesUploadApiEndpoint, body)
-		if err != nil {
-			return nil, err
-		}
-		req.URL.RawQuery = (*uv).Encode()
+		return nil, errors.New("`opt *FilesUploadOpt` argument must be specified.")
 	}
-	contentType := ""
+	contentType := "application/x-www-form-urlencoded"
 
-	if opt.Content != "" {
-		uv.Add("content", opt.Content)
-	}
 	if opt.Filetype != "" {
 		uv.Add("filetype", opt.Filetype)
 	}
@@ -80,14 +75,15 @@ func (sl *Slack) createFilesUploadRequest(opt *FilesUploadOpt) (*http.Request, e
 	if len(opt.Channels) != 0 {
 		uv.Add("channels", strings.Join(opt.Channels, ","))
 	}
+
 	if opt.Filepath != "" {
-		var b *bytes.Buffer
 		var err error
-		b, contentType, err = createFileParam("file", opt.Filepath)
+		body, contentType, err = createFileParam("file", opt.Filepath)
 		if err != nil {
 			return nil, err
 		}
-		body = b
+	} else if opt.Content != "" {
+		body = strings.NewReader(url.Values{"content": []string{opt.Content}}.Encode())
 	}
 
 	req, err := http.NewRequest("POST", apiBaseUrl+filesUploadApiEndpoint, body)
