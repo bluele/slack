@@ -129,6 +129,7 @@ type ChannelsHistoryOpt struct {
 	Oldest    float64 `json:"oldest"`
 	Inclusive int     `json:"inclusive"`
 	Count     int     `json:"count"`
+	UnReads   int     `json:"unreads,omitempty"`
 }
 
 func (opt *ChannelsHistoryOpt) Bind(uv *url.Values) error {
@@ -143,19 +144,21 @@ func (opt *ChannelsHistoryOpt) Bind(uv *url.Values) error {
 	if opt.Count != 0 {
 		uv.Add("count", strconv.Itoa(opt.Count))
 	}
+	uv.Add("unreads", strconv.Itoa(opt.UnReads))
 	return nil
 }
 
 // response type for `channels.history` api
 type ChannelsHistoryResponse struct {
 	BaseAPIResponse
-	Latest   float64    `json:"latest"`
-	Messages []*Message `json:"messages"`
-	HasMore  bool       `json:"has_more"`
+	Latest             float64    `json:"latest"`
+	Messages           []*Message `json:"messages"`
+	HasMore            bool       `json:"has_more"`
+	UnReadCountDisplay int        `json:"unread_count_display"`
 }
 
 // API channels.history: Fetches history of messages and events from a channel.
-func (sl *Slack) ChannelsHistory(opt *ChannelsHistoryOpt) ([]*Message, error) {
+func (sl *Slack) ChannelsHistory(opt *ChannelsHistoryOpt) (*ChannelsHistoryResponse, error) {
 	uv := sl.urlValues()
 	err := opt.Bind(uv)
 	if err != nil {
@@ -172,6 +175,14 @@ func (sl *Slack) ChannelsHistory(opt *ChannelsHistoryOpt) ([]*Message, error) {
 	}
 	if !res.Ok {
 		return nil, errors.New(res.Error)
+	}
+	return res, nil
+}
+
+func (sl *Slack) ChannelsHistoryMessages(opt *ChannelsHistoryOpt) ([]*Message, error) {
+	res, err := sl.ChannelsHistory(opt)
+	if err != nil {
+		return nil, err
 	}
 	return res.Messages, nil
 }
