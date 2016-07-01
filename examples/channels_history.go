@@ -17,7 +17,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	msgs, err := api.ChannelsHistory(&slack.ChannelsHistoryOpt{
+	msgs, err := api.ChannelsHistoryMessages(&slack.ChannelsHistoryOpt{
 		Channel: channel.Id,
 	})
 	if err != nil {
