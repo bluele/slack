@@ -12,12 +12,7 @@ const (
 
 func main() {
 	api := slack.New(token)
-	group, err := api.FindGroupByName(groupName)
-	if err != nil {
-		panic(err)
-	}
-
-	err = api.ChatPostMessage(group.Id, "Hello, world!", &slack.ChatPostMessageOpt{AsUser: true})
+	err := api.ChatPostMessage(groupName, "Hello, world!", &slack.ChatPostMessageOpt{AsUser: true})
 	if err != nil {
 		panic(err)
 	}
