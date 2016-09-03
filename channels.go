@@ -118,8 +118,9 @@ type Message struct {
 }
 
 func (msg *Message) Timestamp() *time.Time {
-	tsf, _ := strconv.ParseFloat(msg.Ts, 64)
-	ts := time.Unix(int64(tsf), 0)
+	seconds, _ := strconv.ParseInt(msg.Ts[0:10], 10, 64)
+	microseconds, _ := strconv.ParseInt(msg.Ts[11:17], 10, 64)
+	ts := time.Unix(seconds, microseconds*1e3)
 	return &ts
 }
 
