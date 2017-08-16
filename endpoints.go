@@ -19,6 +19,7 @@ const (
 	mpimListApiEndpoint = "mpim.list"
 
 	filesUploadApiEndpoint = "files.upload"
+	filesInfoApiEndpoint   = "files.info"
 
 	usersInfoApiEndpoint = "users.info"
 	usersListApiEndpoint = "users.list"

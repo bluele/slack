@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/bluele/slack"
 	"path/filepath"
+
+	"github.com/bluele/slack"
 )
 
 // Please change these values to suit your environment
@@ -20,16 +21,17 @@ func main() {
 		panic(err)
 	}
 
-	err = api.FilesUpload(&slack.FilesUploadOpt{
+	info, err = api.FilesUpload(&slack.FilesUploadOpt{
 		Filepath: uploadFilePath,
 		Filetype: "text",
 		Filename: filepath.Base(uploadFilePath),
 		Title:    "upload test",
 		Channels: []string{channel.Id},
 	})
+	
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println("Completed file upload.")
+	fmt.Println(fmt.Sprintf("Completed file upload with the ID: '%s'.", info.ID)
 }
