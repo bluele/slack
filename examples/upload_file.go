@@ -28,10 +28,10 @@ func main() {
 		Title:    "upload test",
 		Channels: []string{channel.Id},
 	})
-	
+
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(fmt.Sprintf("Completed file upload with the ID: '%s'.", info.ID)
+	fmt.Println(fmt.Sprintf("Completed file upload with the ID: '%s'.", info.ID))
 }
