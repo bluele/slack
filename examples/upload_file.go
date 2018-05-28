@@ -21,7 +21,7 @@ func main() {
 		panic(err)
 	}
 
-	info, err = api.FilesUpload(&slack.FilesUploadOpt{
+	info, err := api.FilesUpload(&slack.FilesUploadOpt{
 		Filepath: uploadFilePath,
 		Filetype: "text",
 		Filename: filepath.Base(uploadFilePath),

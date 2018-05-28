@@ -14,7 +14,7 @@ const (
 
 func main() {
 	api := slack.New(token)
-	file, err = api.FindFile(uploadedFileId)
+	file, err := api.FindFile(uploadedFileId)
 
 	if err != nil {
 		panic(err)
