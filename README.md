@@ -4,6 +4,8 @@ Golang client for the Slack API. Include the example code using each slack api.
 
 ## Currently supports:
 
+### API
+
 Method | Description | Example
 --- | --- | ---
 channels.history | Fetches history of messages and events from a channel. | [#link](https://github.com/bluele/slack/blob/master/examples/channels_history.go)
@@ -17,6 +19,18 @@ groups.create | Creates a private group. | [#link](https://github.com/bluele/sla
 groups.list | Lists private groups that the calling user has access to. | [#link](https://github.com/bluele/slack/blob/master/examples/groups_list.go)
 users.info | Gets information about a channel. | [#link](https://github.com/bluele/slack/blob/master/examples/users_info.go)
 users.list | Lists all users in a Slack team. | [#link](https://github.com/bluele/slack/blob/master/examples/users_list.go)
+
+### Webhooks
+
+Method | Description | Example
+--- | --- | ---
+hook.PostMessage | Post message to a slack webhook. | [#link](https://github.com/bluele/slack/blob/master/examples/webhook_post.go)
+
+### Slash command responses
+
+Method | Description | Example
+--- | --- | ---
+response.PostDelayedResponse | Post reply to a slack response url. | [#link](https://github.com/bluele/slack/blob/master/examples/delayed_response_post.go)
 
 
 ## Example
