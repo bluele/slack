@@ -38,7 +38,7 @@ func (hk *WebHook) PostMessage(payload *WebHookPostPayload) error {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		t, _ := ioutil.ReadAll(resp.Body)
 		return errors.New(string(t))
 	}
